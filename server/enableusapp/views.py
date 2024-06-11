@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer
+from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,TherapistUserSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
 from rest_framework import status
-from .models import UserProfile,CustomUser
+from .models import UserProfile,CustomUser,TherapistUser
 
 
 
@@ -23,6 +23,15 @@ class UserRegistrationView(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
+
+class TherapistUserView(APIView):
+    def post(self,request,format=None):
+        serializer=TherapistUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)         
         
 
 

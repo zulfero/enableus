@@ -44,6 +44,16 @@ class CustomUser(AbstractBaseUser):
         return self.firstname
 
 
+class TherapistUser(AbstractBaseUser):
+      firstname=models.CharField(max_length=50)
+      lastname=models.CharField(max_length=50)
+      email=models.EmailField(max_length=50,unique=True)
+      address=models.CharField(max_length=50)
+      speciality=models.CharField(max_length=100)
+      is_active=models.BooleanField(default=True)
+              
+
+
 class UserProfile(models.Model):
     user=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
 
