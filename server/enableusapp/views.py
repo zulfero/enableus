@@ -5,8 +5,8 @@ from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProf
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import login
 from rest_framework import status
-from django.contrib.auth.hashers import check_password
 from .models import UserProfile,CustomUser
 
 

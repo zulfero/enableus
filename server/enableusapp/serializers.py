@@ -12,6 +12,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         password=validated_data.pop("password")
         user=self.Meta.model(**validated_data)
         user.set_password(password)
+        print(user)
         user.save()
         return user
 

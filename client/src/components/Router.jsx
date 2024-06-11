@@ -1,0 +1,29 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "../pages/Layout";
+import Signup from "../pages/Signup";
+import Signin from "../pages/Signin";
+function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/signup"
+          element={
+            <Layout>
+              <Signup />
+            </Layout>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <Layout>
+              <Signin />
+            </Layout>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+export default Router;
