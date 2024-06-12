@@ -1,13 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from rest_framework.views import APIView
-from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,TherapistUserSerializer
+from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,TherapistUserSerializer,BookingSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
 from rest_framework import status
-from .models import UserProfile,CustomUser,TherapistUser
+from .models import UserProfile,CustomUser,TherapistUser,Booking
+from rest_framework.permissions import  IsAuthenticated
+
 
 
 
@@ -65,13 +67,62 @@ class UserLoginView(APIView):
           return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)  
 
 
+class BookingView(APIView):
+    def post(self,request,format=None):
+        serializer=BookingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)     
+        
+
+
+
 
 
 class UserProfileView(APIView):
+
     def get(self,request,format=None):
         all_userprofiles=UserProfile.objects.all()
         serializer=UserProfileSerializer(all_userprofiles,many=True)
-        return Response(serializer.data) 
+        return Response(serializer.data)
+
+    def post(self,request,format=None):
+        serializer=UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self,request,format=None):
+        serializer=UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)        
+
+
+class SingleProfileView(APIView):
+    permission_classes=[IsAuthenticated]
+    def getById(self,id):
+        try:
+            return UserProfile.objects.get(id=id)
+        except UserProfile.DoesNotExist:
+            raise Http404
+
+    def get(self,request,id,format=None):
+        userprofile=self.getById(id)
+        serializer=UserProfileSerializer(userprofile)
+        return Response(serializer.data)
+     
+
+           
+
+
+
+
+
 
 
 
