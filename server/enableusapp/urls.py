@@ -1,3 +1,4 @@
+
 from django.urls import path
 from . import views
 
@@ -12,4 +13,6 @@ urlpatterns=[
     path('singleprofile/<id>',views.SingleProfileView.as_view(),name='singleprofile'),
 
 ]
+
+from django import path
 
