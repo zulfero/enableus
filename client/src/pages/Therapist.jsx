@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 function Therapist() {
@@ -218,4 +219,4 @@ function Therapist() {
   );
 }
 
-export default Therapist;
+

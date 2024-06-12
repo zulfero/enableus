@@ -1,3 +1,4 @@
+
 import Router from './Components/Router'
 function App(){
   return(
@@ -7,3 +8,12 @@ function App(){
   )
 }
 export default App
+
+import Router from "./components/Router";
+
+function App() {
+  return <Router />;
+}
+
+export default App;
+
