@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 
-function Therapist() {
+function TherapistForm() {
   const [isFormVisible, setIsFormVisible] = useState(false);
 
   const handleBookNowClick = () => {
@@ -218,5 +218,5 @@ function Therapist() {
     </>
   );
 }
-
+export default TherapistForm
 

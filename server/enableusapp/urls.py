@@ -14,5 +14,4 @@ urlpatterns=[
 
 ]
 
-from django import path
 
