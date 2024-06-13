@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser,UserProfile,TherapistUser,Booking
+from .models import CustomUser,UserProfile,TherapistUser,Booking,TherapistProfile
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -46,4 +46,9 @@ class UserLoginSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
    class Meta:
       model=UserProfile
-      fields=("id","user", "phonenumber","gender", "address")   
+      fields=("id","user", "phonenumber","gender", "patient_profile_img", "address")
+
+class TherapistProfileSerializer(serializers.ModelSerializer):
+   class Meta:
+      model=TherapistProfile
+      fields=("id","user", "phonenumber","gender", "patient_profile_img", "address")           

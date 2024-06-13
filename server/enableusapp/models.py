@@ -16,6 +16,13 @@ speciality=[
       ("stroke","Stroke"),
 ]
 
+def patient_img(instance,filename):
+      return "patients/{filename}".format(filename=filename)
+
+def Therapist_img(instance,filename):
+      return "therapists/{filename}".format(filename=filename)      
+
+
 
 class CustomUserManager(BaseUserManager):
       def create_user(self,email,password=None,**extra_kwargs):
@@ -72,11 +79,22 @@ class TherapistUser(AbstractBaseUser):
         return self.firstname
 
 
-
-class UserProfile(models.Model):
-    user=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+class TherapistProfile(models.Model):
+    user=models.OneToOneField(TherapistUser,on_delete=models.CASCADE)
     phonenumber=models.IntegerField(null=True) 
     address=models.TextField(null=True,blank=True)
+    patient_profile_img=models.ImageField(upload_to=patient_img, default="therapists/default.png")
+    gender=models.CharField(max_length=20, null=True, choices=gender)
+
+    def __str__(self):
+        return f"{self.user.firstname}'s profile" 
+
+
+class UserProfile(models.Model):
+    user=models.OneToOneField(TherapistUser,on_delete=models.CASCADE)
+    phonenumber=models.IntegerField(null=True) 
+    address=models.TextField(null=True,blank=True)
+    patient_profile_img=models.ImageField(upload_to=patient_img, default="patients/default.png")
     gender=models.CharField(max_length=20, null=True, choices=gender)
 
     def __str__(self):

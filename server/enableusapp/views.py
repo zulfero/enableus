@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,Http404
 from rest_framework.views import APIView
-from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,TherapistUserSerializer,BookingSerializer
+from .serializers import UserRegistrationSerializer,UserLoginSerializer,UserProfileSerializer,TherapistUserSerializer,BookingSerializer,TherapistProfileSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
@@ -94,13 +94,29 @@ class UserProfileView(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self,request,format=None):
-        serializer=UserProfileSerializer(data=request.data)
+
+
+class TherapistProfileView(APIView):
+
+    def get(self,request,format=None):
+        all_userprofiles=TherapistProfileSerializer.objects.all()
+        serializer=UserProfileSerializer(all_userprofiles,many=True)
+        return Response(serializer.data)
+
+    def post(self,request,format=None):
+        serializer=TherapistProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)        
+
+    # def put(self,request,format=None):
+    #     serializer=UserProfileSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+    #     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)        
 
 
 class SingleProfileView(APIView):
@@ -129,7 +145,37 @@ class SingleProfileView(APIView):
     def delete(self,request,id,format=None):
         userprofile=self.getById(id)
         userprofile.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)    
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class SingleTherapistProfileView(APIView):
+    permission_classes=[IsAuthenticated]
+    def getById(self,id):
+        try:
+            return TherapistProfile.objects.get(id=id)
+        except TherapistProfile.DoesNotExist:
+            raise Http404
+
+    def get(self,request,id,format=None):
+        therapistprofile=self.getById(id)
+        serializer=TherapistProfileSerializer(therapistprofile)
+        return Response(serializer.data)
+
+
+    def put(self,request,id,format=None):
+        therapistprofile=self.getById(id)
+        serializer=TherapistProfileSerializer (therapistprofile,request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)  
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
+
+    def delete(self,request,id,format=None):
+        therapistprofile=self.getById(id)
+        therapistprofile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)                
 
            
 
